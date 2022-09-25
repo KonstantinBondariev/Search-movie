@@ -1,0 +1,49 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: arial ;
+  font-weight: 400;
+}
+
+.movies {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.movie {
+  position: relative;
+}
+.movie__type {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: antiquewhite;
+}
+
+.movie__img {
+
+  width: 100%;
+}
+
+.movie__type-img {
+  width: 80%;
+
+  display: block;
+  margin: 2px auto;
+  border-radius: 3px;
+}
+
+.movie__title {
+  width: 100%;
+  height: 15%;
+  background-color: blue;
+  color: tomato;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
