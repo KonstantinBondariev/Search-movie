@@ -116,20 +116,13 @@ const _createMarkup = () => {
 };
 
 const _addMovieToList = (movie) => {
-  console.log(movie);
-
   const item = document.createElement('div');
-  const img = document.createElement('img');
-  const title = document.createElement('div');
-  const type = document.createElement('div');
-  const typeImg = document.createElement('img');
-
   item.setAttribute('class', 'movie');
+  movielist.append(item);
+
+  const img = document.createElement('img');
   img.setAttribute('class', 'movie__img');
-  title.setAttribute('class', 'movie__title');
-  type.setAttribute('class', 'movie__type');
-  typeImg.setAttribute('class', 'movie__type-img');
-  console.log(/^(http|https):\/\//i.test(movie.Poster));
+
   if (/^(http|https):\/\//i.test(movie.Poster)) {
     img.src = movie.Poster;
   } else {
@@ -137,7 +130,20 @@ const _addMovieToList = (movie) => {
   }
   img.alt = `${movie.Title}, ${movie.Year}`;
   img.title = `${movie.Title}, ${movie.Year}`;
+  item.append(img);
+
+  const title = document.createElement('div');
+  title.setAttribute('class', 'movie__title');
   title.innerHTML = `${movie.Title}, ${movie.Year}`;
+
+  item.append(title);
+
+  const type = document.createElement('div');
+  type.setAttribute('class', 'movie__type');
+  item.append(type);
+
+  const typeImg = document.createElement('img');
+  typeImg.setAttribute('class', 'movie__type-img');
   switch (movie.Type) {
     case 'movie':
       typeImg.src = 'assets/img/film.png';
@@ -149,10 +155,6 @@ const _addMovieToList = (movie) => {
       break;
   }
   type.append(typeImg);
-  item.append(type);
-  item.append(img);
-  item.append(title);
-  movielist.append(item);
 };
 
 const _createStyle = () => {
