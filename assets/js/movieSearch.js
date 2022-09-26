@@ -113,40 +113,66 @@ const _createMarkup = () => {
   const searchForm = _createElement({
     type: 'div',
     attrs: {
-      class: 'inputSearch-form',
+      class: 'search',
     },
     container,
     position: 'prepend',
   });
 
+  const searchGroup1 = _createElement({
+    type: 'div',
+    attrs: {
+      class: 'search__group',
+    },
+    container: searchForm,
+  });
+
+  const searchGroup2 = _createElement({
+    type: 'div',
+    attrs: {
+      class: 'search__group',
+    },
+    container: searchForm,
+  });
+
   _createElement({
     type: 'lable',
     attrs: {
-      class: 'inputSearch-form__lable',
+      class: 'search__lable',
       for: 'inputSearch',
       innerHTML: 'Enter movie title',
     },
-    container: searchForm,
+    container: searchGroup1,
   });
 
   searchInput = _createElement({
     type: 'input',
     attrs: {
-      class: 'inputSearch-form__input',
+      class: 'search__input',
       id: 'inputSearch',
       type: 'search',
       placeholder: 'Enter movie title',
     },
-    container: searchForm,
+    container: searchGroup1,
+  });
+
+  _createElement({
+    type: 'lable',
+    attrs: {
+      class: 'search__lable',
+      for: 'select',
+      innerHTML: 'choise movie Year',
+    },
+    container: searchGroup2,
   });
 
   const selectYear = _createElement({
     type: 'select',
     attrs: {
-      class: 'inputSearch-form__input',
+      class: 'search__input',
       id: 'select',
     },
-    container: searchForm,
+    container: searchGroup2,
   });
 
   _createElement({
@@ -168,20 +194,11 @@ const _createMarkup = () => {
       container: selectYear,
     });
   }
-  _createElement({
-    type: 'lable',
-    attrs: {
-      class: 'inputSearch-form__lable',
-      for: 'select',
-      innerHTML: 'choise movie Year',
-    },
-    container: searchForm,
-  });
 
   // btn = _createElement({
   //   type: 'button',
   //   attrs: {
-  //     class: 'inputSearch-form__input',
+  //     class: 'search__input',
   //     id: 'btn',
   //     type: 'button',
   //     innerHTML: 'Serch',
@@ -208,6 +225,30 @@ const _checkYear = (movie) => {
     ? true
     : false;
 };
+
+// const _checkYear = (movies) => {
+//   let cureantMoviesArr = [];
+//   let enteredMoviesArr = movies;
+//   let select = document.getElementById('select');
+//   select.addEventListener('change', function () {
+//     select.value = this.value;
+//   });
+//   if (select.value == 'all') return true;
+
+//   ((movies) => {
+//     movies.forEach((movie) => {
+//       if (movie.Year == select.velue) cureantMoviesArr.push(movie);
+//     });
+//   })(enteredMoviesArr);
+
+//   _clearMoviesMarckup(movieList);
+
+//   ((cureantMoviesArr) => {
+//     cureantMoviesArr.forEach((movie) => {
+//       _addMovieToList(movie);
+//     });
+//   })(cureantMoviesArr);
+// };
 
 const _addMovieToList = (movie) => {
   const item = _createElement({
@@ -310,7 +351,7 @@ const inputSearchHendler = (e) => {
           movies.forEach((movie) => {
             if (_checkYear(movie)) {
               _addMovieToList(movie);
-              serchWithBtn = searchStr;
+              movies;
             }
           })
         )
