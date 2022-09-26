@@ -16,12 +16,16 @@ body {
 
 .movies {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-rows: 400px;
+  grid-row-gap: 20px;
   gap: 20px;
 }
 
 .movie {
+  display: block;
   position: relative;
+  background-color: rgb(194, 194, 197);
 }
 .movie__type {
   position: absolute;
@@ -36,6 +40,9 @@ body {
 .movie__img {
 
   width: 100%;
+  min-height: 85%;
+  max-height: 85%;
+  
   object-fit: cover;
 }
 
@@ -50,10 +57,56 @@ body {
 .movie__title {
   width: 100%;
   height: 15%;
-  background-color: blue;
-  color: tomato;
+  background-color: rgb(194, 194, 197);
+ 
   
   display: flex;
   justify-content: center;
   align-items: center;
+  color: black;
+  text-decoration: none;
+}
+
+.search {
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.search__group {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  width: 70%;
+
+}
+
+.search__group--input {
+
+}
+
+.search__group--select {
+ 
+}
+
+
+
+.search__input {
+  display: block;
+  max-width: 400px;
+  width: 100%;
+ 
+}
+
+
+.search__input--select {
+  
+  max-width: 200px;
+
+}
+
+.search__lable {
+  font-size: 1.2rem;
+ 
 }
