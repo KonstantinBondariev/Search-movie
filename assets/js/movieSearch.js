@@ -325,10 +325,10 @@ class MovieSerch {
         this._getData(`http://www.omdbapi.com/?apikey=5e826b4b&s=${searchStr}`)
           .then((movies) =>
             movies.forEach((movie) => {
-              if (_checkYear(movie)) {
-                _addMovieToList(movie);
-                movies;
-              }
+              // if (_checkYear(movie)) {
+              _addMovieToList(movie);
+              movies;
+              // }
             })
           )
           .catch((err) => console.log(err));
