@@ -322,7 +322,7 @@ class MovieSerch {
       if (searchStr && searchStr.length > 3 && searchStr !== this.searchLast) {
         this._clearMoviesMarckup(this.movieList);
 
-        this._getData(`http://www.omdbapi.com/?apikey=5e826b4b&s=${searchStr}`)
+        this._getData(`https://www.omdbapi.com/?apikey=5e826b4b&s=${searchStr}`)
           .then((movies) =>
             movies.forEach((movie) => {
               // if (_checkYear(movie)) {
