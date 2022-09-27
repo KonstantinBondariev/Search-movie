@@ -10,6 +10,7 @@ class MovieSerch {
           margin: 0;
           font-family: arial ;
           font-weight: 400;
+          background-color: #F1F3F4;
         }
 
         .container {
@@ -29,7 +30,8 @@ class MovieSerch {
         .movie {
           display: block;
           position: relative;
-          background-color: rgb(194, 194, 197);
+          text-decoration: none;
+          background-color: #FFFFFF;
         }
         .movie__type {
           position: absolute;
@@ -57,12 +59,10 @@ class MovieSerch {
         .movie__title {
           width: 100%;
           height: 15%;
-          background-color: rgb(194, 194, 197);  
           display: flex;
           justify-content: center;
           align-items: center;
           color: black;
-          text-decoration: none;
         }
 
         .search {
@@ -73,25 +73,28 @@ class MovieSerch {
 
         .search__group {
           display: flex;
-          justify-content: space-between;
+          align-items: center;
+          gap: 30px;
           margin-bottom: 20px;
-          width: 70%;
+          width: 100%;
         }
 
         .search__input {
           display: block;
           max-width: 400px;
-          width: 100%; 
+          width: 100%;
+          height: 2rem;
+          border-color: grey;
+          border-radius: 5px; 
         }
 
         .search__input--select {  
-          max-width: 200px;
+          max-width: 80px;
         }
 
         .search__lable {
           font-size: 1.2rem; 
         }`;
-    this.searchLast = null;
   }
 
   _createElement({ type, attrs, container = null, position = 'append' }) {
@@ -184,7 +187,7 @@ class MovieSerch {
       attrs: {
         class: 'search__lable',
         for: 'select',
-        innerHTML: 'choise movie Year',
+        innerHTML: 'Filter movies by release year (executed on request ;) )',
       },
       container: this.searchGroup2,
     });
@@ -192,7 +195,7 @@ class MovieSerch {
     this.selectYear = this._createElement({
       type: 'select',
       attrs: {
-        class: 'search__input',
+        class: 'search__input search__input--select',
         id: 'select',
       },
       container: this.searchGroup2,
@@ -226,17 +229,17 @@ class MovieSerch {
     });
   }
 
-  // _checkYear(movie) {
-  //   this.select = document.getElementById('select');
-  //   this.select.addEventListener('change', function () {
-  //     this.select.value = this.value;
-  //   });
-  //   return this.select.value == 'all'
-  //     ? true
-  //     : select.value == movie.Year
-  //     ? true
-  //     : false;
-  // }
+  _checkYear(movie) {
+    this.select = document.getElementById('select');
+    this.select.addEventListener('change', function () {
+      this.select.value = this.value;
+    });
+    return this.select.value == 'all'
+      ? true
+      : select.value == movie.Year
+      ? true
+      : false;
+  }
 
   _addMovieToList(movie) {
     this.item = this._createElement({
@@ -309,26 +312,26 @@ class MovieSerch {
   _clearMoviesMarckup(el) {
     el && (el.innerHTML = '');
   }
-
-  _getData(url) {
-    fetch(url).then((response) => response.json().then((json) => json.Search));
-  }
+  //  так и несмог разобраться, вероятно потеря контекста
+  // _getData(url) {
+  //   fetch(url).then((response) => response.json().then((json) => json.Search));
+  // }
 
   _inputSearchHendler(e) {
-    console.log(this._debaunce);
     this._debaunce(() => {
       const searchStr = e.target.value.trim();
 
       if (searchStr && searchStr.length > 3 && searchStr !== this.searchLast) {
         this._clearMoviesMarckup(this.movieList);
 
-        this._getData(`https://www.omdbapi.com/?apikey=5e826b4b&s=${searchStr}`)
+        fetch(`https://www.omdbapi.com/?apikey=5e826b4b&s=${searchStr}`)
+          .then((response) => response.json().then((json) => json.Search))
           .then((movies) =>
             movies.forEach((movie) => {
-              // if (_checkYear(movie)) {
-              _addMovieToList(movie);
-              movies;
-              // }
+              if (this._checkYear(movie)) {
+                this._addMovieToList(movie);
+                movies;
+              }
             })
           )
           .catch((err) => console.log(err));
