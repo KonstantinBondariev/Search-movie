@@ -34,21 +34,17 @@ body {
   background-color: antiquewhite;
   z-index: 2;
   top: 0;
-
 }
 
 .movie__img {
-
   width: 100%;
   min-height: 85%;
-  max-height: 85%;
-  
+  max-height: 85%;  
   object-fit: cover;
 }
 
 .movie__type-img {
   width: 80%;
-
   display: block;
   margin: 2px auto;
   border-radius: 3px;
@@ -57,9 +53,7 @@ body {
 .movie__title {
   width: 100%;
   height: 15%;
-  background-color: rgb(194, 194, 197);
- 
-  
+  background-color: rgb(194, 194, 197);  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -82,23 +76,12 @@ body {
 
 }
 
-.search__group--input {
-
-}
-
-.search__group--select {
- 
-}
-
-
-
 .search__input {
   display: block;
   max-width: 400px;
   width: 100%;
  
 }
-
 
 .search__input--select {
   

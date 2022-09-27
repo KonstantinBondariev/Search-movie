@@ -1,373 +1,351 @@
-// const _getData = (url) =>
-//   new Promise((resolve, reject) => {
-//     const xhr = new XMLHttpRequest();
-//     xhr.open('GET', url);
-//     xhr.send();
-//     xhr.onload = () => {
-//       if (xhr.status === 200) {
-//         const json = JSON.parse(xhr.response);
-//         resolve(json.Search);
-//       } else reject(xhr.status);
-//     };
-//     xhr.onerror = (err) => reject(err);
-//   });
-let movieList = null;
-const styleStr = `* {
-  box-sizing: border-box;
-}
+class MovieSerch {
+  constructor(debaunce) {
+    this.movieList = null;
+    this._debaunce = debaunce;
+    this.styleStr = `* {
+          box-sizing: border-box;
+        }
 
-body {
-  margin: 0;
-  font-family: arial ;
-  font-weight: 400;
-}
+        body {
+          margin: 0;
+          font-family: arial ;
+          font-weight: 400;
+        }
 
-.movies {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-}
+        .container {
+          max-width: 1280px;
+          margin: 0 auto;
+          padding: 20px;
+        }
 
-.movie {
-  position: relative;
-}
-.movie__type {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  background-color: antiquewhite;
-}
+        .movies {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+          grid-template-rows: 400px;
+          grid-row-gap: 20px;
+          gap: 20px;
+        }
 
-.movie__img {
+        .movie {
+          display: block;
+          position: relative;
+          background-color: rgb(194, 194, 197);
+        }
+        .movie__type {
+          position: absolute;
+          width: 30px;
+          height: 30px;
+          background-color: antiquewhite;
+          z-index: 2;
+          top: 0;
+        }
 
-  width: 100%;
-}
+        .movie__img {
+          width: 100%;
+          min-height: 85%;
+          max-height: 85%;  
+          object-fit: cover;
+        }
 
-.movie__type-img {
-  width: 80%;
+        .movie__type-img {
+          width: 80%;
+          display: block;
+          margin: 2px auto;
+          border-radius: 3px;
+        }
 
-  display: block;
-  margin: 2px auto;
-  border-radius: 3px;
-}
+        .movie__title {
+          width: 100%;
+          height: 15%;
+          background-color: rgb(194, 194, 197);  
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: black;
+          text-decoration: none;
+        }
 
-.movie__title {
-  width: 100%;
-  height: 15%;
-  background-color: blue;
-  color: tomato;
-  
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}`;
-let searchInput = 'game';
-const searchLast = null;
-// let btn = null; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// let serchWithBtn = null; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        .search {
+          margin-bottom: 30px;
+          display: flex;
+          flex-direction: column;
+        }
 
-const _createElement = ({
-  type,
-  attrs,
-  container = null,
-  position = 'append',
-}) => {
-  const element = document.createElement(type);
+        .search__group {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 20px;
+          width: 70%;
+        }
 
-  Object.keys(attrs).forEach((key) => {
-    key !== 'innerHTML'
-      ? element.setAttribute(key, attrs[key])
-      : (element.innerHTML = attrs[key]);
-  });
+        .search__input {
+          display: block;
+          max-width: 400px;
+          width: 100%; 
+        }
 
-  switch (position) {
-    case container && 'append':
-      container.append(element);
-      break;
-    case container && 'prepend':
-      container.prepend(element);
-      break;
+        .search__input--select {  
+          max-width: 200px;
+        }
+
+        .search__lable {
+          font-size: 1.2rem; 
+        }`;
+    this.searchLast = null;
   }
-  return element;
-};
 
-const _createMarkup = () => {
-  const container = _createElement({
-    type: 'div',
-    attrs: {
-      class: 'container',
-    },
-    container: document.body,
-    position: 'prepend',
-  });
+  _createElement({ type, attrs, container = null, position = 'append' }) {
+    const element = document.createElement(type);
 
-  const movies = _createElement({
-    type: 'div',
-    attrs: {
-      class: 'movies',
-    },
-    container,
-  });
-  movieList = document.querySelector('.movies');
+    Object.keys(attrs).forEach((key) => {
+      key !== 'innerHTML'
+        ? element.setAttribute(key, attrs[key])
+        : (element.innerHTML = attrs[key]);
+    });
 
-  const searchForm = _createElement({
-    type: 'div',
-    attrs: {
-      class: 'search',
-    },
-    container,
-    position: 'prepend',
-  });
+    switch (position) {
+      case container && 'append':
+        container.append(element);
+        break;
+      case container && 'prepend':
+        container.prepend(element);
+        break;
+    }
+    return element;
+  }
 
-  const searchGroup1 = _createElement({
-    type: 'div',
-    attrs: {
-      class: 'search__group',
-    },
-    container: searchForm,
-  });
+  _createMarkup() {
+    this.container = this._createElement({
+      type: 'div',
+      attrs: {
+        class: 'container',
+      },
+      container: document.body,
+      position: 'prepend',
+    });
 
-  const searchGroup2 = _createElement({
-    type: 'div',
-    attrs: {
-      class: 'search__group',
-    },
-    container: searchForm,
-  });
+    this.movies = this._createElement({
+      type: 'div',
+      attrs: {
+        class: 'movies',
+      },
+      container: this.container,
+    });
+    this.movieList = document.querySelector('.movies');
 
-  _createElement({
-    type: 'lable',
-    attrs: {
-      class: 'search__lable',
-      for: 'inputSearch',
-      innerHTML: 'Enter movie title',
-    },
-    container: searchGroup1,
-  });
+    this.searchForm = this._createElement({
+      type: 'div',
+      attrs: {
+        class: 'search',
+      },
+      container: this.container,
+      position: 'prepend',
+    });
 
-  searchInput = _createElement({
-    type: 'input',
-    attrs: {
-      class: 'search__input',
-      id: 'inputSearch',
-      type: 'search',
-      placeholder: 'Enter movie title',
-    },
-    container: searchGroup1,
-  });
+    this.searchGroup1 = this._createElement({
+      type: 'div',
+      attrs: {
+        class: 'search__group',
+      },
+      container: this.searchForm,
+    });
 
-  _createElement({
-    type: 'lable',
-    attrs: {
-      class: 'search__lable',
-      for: 'select',
-      innerHTML: 'choise movie Year',
-    },
-    container: searchGroup2,
-  });
+    this.searchGroup2 = this._createElement({
+      type: 'div',
+      attrs: {
+        class: 'search__group',
+      },
+      container: this.searchForm,
+    });
 
-  const selectYear = _createElement({
-    type: 'select',
-    attrs: {
-      class: 'search__input',
-      id: 'select',
-    },
-    container: searchGroup2,
-  });
+    this._createElement({
+      type: 'lable',
+      attrs: {
+        class: 'search__lable',
+        for: 'inputSearch',
+        innerHTML: 'Enter movie title',
+      },
+      container: this.searchGroup1,
+    });
 
-  _createElement({
-    type: 'option',
-    attrs: {
-      value: 'all',
-      innerHTML: `all`,
-    },
-    container: selectYear,
-  });
+    this.searchInput = this._createElement({
+      type: 'input',
+      attrs: {
+        class: 'search__input',
+        id: 'inputSearch',
+        type: 'search',
+        placeholder: 'Enter movie title',
+      },
+      container: this.searchGroup1,
+    });
 
-  for (let i = 1900; i <= new Date().getFullYear(); i++) {
-    _createElement({
+    this._createElement({
+      type: 'lable',
+      attrs: {
+        class: 'search__lable',
+        for: 'select',
+        innerHTML: 'choise movie Year',
+      },
+      container: this.searchGroup2,
+    });
+
+    this.selectYear = this._createElement({
+      type: 'select',
+      attrs: {
+        class: 'search__input',
+        id: 'select',
+      },
+      container: this.searchGroup2,
+    });
+
+    this._createElement({
       type: 'option',
       attrs: {
-        value: `${i}`,
-        innerHTML: `${i}`,
+        value: 'all',
+        innerHTML: `all`,
       },
-      container: selectYear,
+      container: this.selectYear,
+    });
+
+    for (let i = 1900; i <= new Date().getFullYear(); i++) {
+      this._createElement({
+        type: 'option',
+        attrs: {
+          value: `${i}`,
+          innerHTML: `${i}`,
+        },
+        container: this.selectYear,
+      });
+    }
+
+    this._createElement({
+      type: 'h1',
+      attrs: { innerHTML: 'Search movie app' },
+      container: this.container,
+      position: 'prepend',
     });
   }
 
-  // btn = _createElement({
-  //   type: 'button',
-  //   attrs: {
-  //     class: 'search__input',
-  //     id: 'btn',
-  //     type: 'button',
-  //     innerHTML: 'Serch',
-  //   },
-  //   container: searchForm,
-  // });
+  // _checkYear(movie) {
+  //   this.select = document.getElementById('select');
+  //   this.select.addEventListener('change', function () {
+  //     this.select.value = this.value;
+  //   });
+  //   return this.select.value == 'all'
+  //     ? true
+  //     : select.value == movie.Year
+  //     ? true
+  //     : false;
+  // }
 
-  _createElement({
-    type: 'h1',
-    attrs: { innerHTML: 'Search movie app' },
-    container,
-    position: 'prepend',
-  });
-};
+  _addMovieToList(movie) {
+    this.item = this._createElement({
+      type: 'a',
+      attrs: {
+        href: '#',
+        class: 'movie',
+      },
+      container: this.movieList,
+    });
 
-const _checkYear = (movie) => {
-  let select = document.getElementById('select');
-  select.addEventListener('change', function () {
-    select.value = this.value;
-  });
-  return select.value == 'all'
-    ? true
-    : select.value == movie.Year
-    ? true
-    : false;
-};
+    this._createElement({
+      type: 'img',
+      attrs: {
+        class: 'movie__img',
+        src: /^(http|https):\/\//i.test(movie.Poster)
+          ? movie.Poster
+          : 'assets/img/no-pictures.png',
+        alt: `${movie.Title}, ${movie.Year}`,
+        title: `${movie.Title}, ${movie.Year}`,
+      },
+      container: this.item,
+    });
 
-// const _checkYear = (movies) => {
-//   let cureantMoviesArr = [];
-//   let enteredMoviesArr = movies;
-//   let select = document.getElementById('select');
-//   select.addEventListener('change', function () {
-//     select.value = this.value;
-//   });
-//   if (select.value == 'all') return true;
+    this._createElement({
+      type: 'div',
+      attrs: {
+        class: 'movie__title',
+        innerHTML: `${movie.Title}, ${movie.Year}`,
+      },
+      container: this.item,
+    });
 
-//   ((movies) => {
-//     movies.forEach((movie) => {
-//       if (movie.Year == select.velue) cureantMoviesArr.push(movie);
-//     });
-//   })(enteredMoviesArr);
+    this.type = this._createElement({
+      type: 'div',
+      attrs: {
+        class: 'movie__type',
+      },
+      container: this.item,
+    });
+    this._createElement({
+      type: 'img',
+      attrs: {
+        class: 'movie__type-img',
+        src:
+          movie.Type == 'movie'
+            ? 'assets/img/film.png'
+            : movie.Type == 'series'
+            ? 'assets/img/series.png'
+            : null,
+        alt:
+          movie.Type == 'movie'
+            ? 'movie'
+            : movie.Type == 'series'
+            ? 'series'
+            : null,
+      },
+      container: this.type,
+    });
+  }
 
-//   _clearMoviesMarckup(movieList);
+  _createStyle() {
+    let style = document.createElement('style');
 
-//   ((cureantMoviesArr) => {
-//     cureantMoviesArr.forEach((movie) => {
-//       _addMovieToList(movie);
-//     });
-//   })(cureantMoviesArr);
-// };
+    style.innerHTML = this.styleStr;
 
-const _addMovieToList = (movie) => {
-  const item = _createElement({
-    type: 'a',
-    attrs: {
-      href: '#',
-      class: 'movie',
-    },
-    container: movieList,
-  });
+    document.head.append(style);
+  }
 
-  _createElement({
-    type: 'img',
-    attrs: {
-      class: 'movie__img',
-      src: /^(http|https):\/\//i.test(movie.Poster)
-        ? movie.Poster
-        : 'assets/img/no-pictures.png',
-      alt: `${movie.Title}, ${movie.Year}`,
-      title: `${movie.Title}, ${movie.Year}`,
-    },
-    container: item,
-  });
+  _clearMoviesMarckup(el) {
+    el && (el.innerHTML = '');
+  }
 
-  _createElement({
-    type: 'div',
-    attrs: {
-      class: 'movie__title',
-      innerHTML: `${movie.Title}, ${movie.Year}`,
-    },
-    container: item,
-  });
+  _getData(url) {
+    fetch(url).then((response) => response.json().then((json) => json.Search));
+  }
 
-  const type = _createElement({
-    type: 'div',
-    attrs: {
-      class: 'movie__type',
-    },
-    container: item,
-  });
-  _createElement({
-    type: 'img',
-    attrs: {
-      class: 'movie__type-img',
-      src:
-        movie.Type == 'movie'
-          ? 'assets/img/film.png'
-          : movie.Type == 'series'
-          ? 'assets/img/series.png'
-          : null,
-      alt:
-        movie.Type == 'movie'
-          ? 'movie'
-          : movie.Type == 'series'
-          ? 'series'
-          : null,
-    },
-    container: type,
-  });
-};
+  _inputSearchHendler(e) {
+    console.log(this._debaunce);
+    this._debaunce(() => {
+      const searchStr = e.target.value.trim();
 
-const _createStyle = () => {
-  const style = document.createElement('style');
+      if (searchStr && searchStr.length > 3 && searchStr !== this.searchLast) {
+        this._clearMoviesMarckup(this.movieList);
 
-  style.innerHTML = styleStr;
+        this._getData(`http://www.omdbapi.com/?apikey=5e826b4b&s=${searchStr}`)
+          .then((movies) =>
+            movies.forEach((movie) => {
+              if (_checkYear(movie)) {
+                _addMovieToList(movie);
+                movies;
+              }
+            })
+          )
+          .catch((err) => console.log(err));
+      }
+    }, 1000);
+  }
 
-  document.head.append(style);
-};
+  init() {
+    this._createMarkup();
+    this._createStyle();
 
-const _clearMoviesMarckup = (el) => el && (el.innerHTML = '');
+    this.searchInput.addEventListener(
+      'keyup',
+      this._inputSearchHendler.bind(this)
+    );
+    this._debaunce.bind(this);
+  }
+}
 
-const _getData = (url) =>
-  fetch(url).then((response) => response.json().then((json) => json.Search));
-
-_createMarkup();
-// _createStyle();
-
-const _debounce = (() => {
-  let timer = null;
-
-  return (cb, ms) => {
-    if (timer) {
-      clearTimeout(timer);
-      timer = null;
-    }
-
-    timer = setTimeout(cb, ms);
-  };
-})();
-
-const inputSearchHendler = (e) => {
-  _debounce(() => {
-    const searchStr = e.target.value.trim();
-
-    if (searchStr && searchStr.length > 3 && searchStr !== searchLast) {
-      _clearMoviesMarckup(movieList);
-
-      _getData(`http://www.omdbapi.com/?apikey=5e826b4b&s=${searchStr}`)
-        .then((movies) =>
-          movies.forEach((movie) => {
-            if (_checkYear(movie)) {
-              _addMovieToList(movie);
-              movies;
-            }
-          })
-        )
-        .catch((err) => console.log(err));
-    }
-  }, 1000);
-};
-
-// const btnSerch = () => {
-//   _getData(`http://www.omdbapi.com/?apikey=5e826b4b&s=${serchWithBtn}`).then(
-//     (movies) =>
-//       movies.forEach((movie) => {
-//         if (_checkYear(movie)) _addMovieToList(movie);
-//       })
-//   );
-// };
-
-searchInput.addEventListener('keyup', inputSearchHendler);
-// btn.addEventListener('click', btnSerch); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+export default MovieSerch;
