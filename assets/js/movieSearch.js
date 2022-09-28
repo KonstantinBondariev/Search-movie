@@ -88,6 +88,10 @@ class MovieSerch {
           border-radius: 5px; 
         }
 
+        .search__input {
+          padding-left: 10px;
+        }
+
         .search__input--select {  
           max-width: 80px;
         }
@@ -177,7 +181,7 @@ class MovieSerch {
         class: 'search__input',
         id: 'inputSearch',
         type: 'search',
-        placeholder: 'Enter movie title',
+        placeholder: 'Start typing to start searching',
       },
       container: this.searchGroup1,
     });
@@ -230,13 +234,11 @@ class MovieSerch {
   }
 
   _checkYear(movie) {
-    this.select = document.getElementById('select');
-    this.select.addEventListener('change', function () {
-      this.select.value = this.value;
-    });
-    return this.select.value == 'all'
+    if (this.value) this.selectYear.value = this.value;
+
+    return this.selectYear.value == 'all'
       ? true
-      : select.value == movie.Year
+      : this.selectYear.value == movie.Year
       ? true
       : false;
   }
@@ -339,14 +341,19 @@ class MovieSerch {
     }, 1000);
   }
 
-  init() {
-    this._createMarkup();
-    this._createStyle();
-
+  _initListeners() {
     this.searchInput.addEventListener(
       'keyup',
       this._inputSearchHendler.bind(this)
     );
+    this.selectYear.addEventListener('change', this._checkYear.bind(this));
+  }
+
+  init() {
+    this._createMarkup();
+    this._createStyle();
+    this._initListeners();
+
     this._debaunce.bind(this);
   }
 }
