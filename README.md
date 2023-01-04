@@ -1,4 +1,4 @@
-Dploy: https://konstantinbondariev.github.io/Search-movie/
+Deploy: https://konstantinbondariev.github.io/Search-movie/
 
 От автора:
 
