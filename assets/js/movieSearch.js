@@ -314,10 +314,6 @@ class MovieSerch {
   _clearMoviesMarckup(el) {
     el && (el.innerHTML = '');
   }
-  //  так и несмог разобраться, вероятно потеря контекста
-  // _getData(url) {
-  //   fetch(url).then((response) => response.json().then((json) => json.Search));
-  // }
 
   _inputSearchHendler(e) {
     this._debaunce(() => {
